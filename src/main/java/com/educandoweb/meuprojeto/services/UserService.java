@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.meuprojeto.entities.User;
 import com.educandoweb.meuprojeto.repositories.UserRepository;
+import com.educandoweb.meuprojeto.services.exceptions.ResourceNotFoundException;
 
 
 // @Component // registra a classe como componente do spring e vai ser injetado automaticamente com Autowired
@@ -18,12 +19,12 @@ public class UserService {
 	private UserRepository repository;
 	
 	public List<User> findAll() {
-		return repository.findAll();
+		return repository.findAll(); 
 	}
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
